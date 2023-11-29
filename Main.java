@@ -1,20 +1,20 @@
 import java.util.Objects;
 import java.util.Scanner;
 public class Main {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws ScannerExeption {
         System.out.println("Input number '+','-','/','*', number -:");
         Scanner scan = new Scanner(System.in);
         String str = scan.nextLine();
         str = str.replaceAll("\\s", "");
         if(str.length()<3 || str.length()>9){
-            System.out.println("Выражение не правильное");
+            throw new ScannerExeption("Выражение <3 или >9 символов");
         }
         else{
             String revers = calc(str);
             System.out.println(revers);
         }
     }
-    public static String calc(String a) {
+    public static String calc(String a) throws ScannerExeption{
         char[] chars = a.toCharArray();
         String num1 = "", num2 = "", progress = null;
         int j = 0;
@@ -48,14 +48,11 @@ public class Main {
                 }
             }
             if(kol==1 || kol==0){
-                System.out.println("Выражение не правильное!");
+                throw new ScannerExeption("Выражение не правильное!");
             } else{
                 sum = Integer.parseInt(otvet(num1,num2,progress));
-                if(sum<1 || sum>10) {
-                    System.out.println("Слишком много для арабских есть только 10");
-                }else {
-                    a=arab[sum-1];
-                }
+                String[] rims = new String[] {"I","II","III","IV","V","VI","VII","VIII","IX","X","XI","XII","XIII","XIV","XV","XVI","XVII","XVIII","XIX","XX"};
+                a=rims[sum-1];
             }
         }
         else {
@@ -64,7 +61,7 @@ public class Main {
         }
         return a;
     }
-    public static String otvet(String num1, String num2, String progress){
+    public static String otvet(String num1, String num2, String progress) throws ScannerExeption{
         int number1 = Integer.parseInt(num1);
         int number2 = Integer.parseInt(num2);
         int sum = 0;
@@ -80,16 +77,15 @@ public class Main {
                 break;
             case "/":
                 if(number2==0){
-                    System.out.println("Делить на ноль нельзя!");
                     sum=0;
+                    throw new ScannerExeption("Делить на ноль нельзя!");
                 }
                 else {
                     sum = number1 / number2;
                 }
                 break;
             default:
-                System.out.println("Нет такого выражения!");
-                break;
+                throw new ScannerExeption("Нет такого выражения!");
         }
         String summ = Integer.toString(sum);
         return summ;
